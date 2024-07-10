@@ -80,8 +80,9 @@ def clone_github_repo():
     github_password = input("Enter your GitHub token: ")
     repo_url = "github.com/0x7amza/WireGuardManager.git"  # هنا رابط المستودع
     
-    current_directory = os.getcwd()
-    parent_directory = os.path.abspath(os.path.join(current_directory, os.pardir))
+    python_directory = os.path.dirname(os.path.abspath(__file__))
+    
+    parent_directory = os.path.abspath(os.path.join(python_directory, os.pardir))
     
     clone_command = f"git clone https://{github_username}:{github_password}@{repo_url} {parent_directory}"
     os.system(clone_command)
