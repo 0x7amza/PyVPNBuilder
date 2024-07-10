@@ -93,7 +93,7 @@ def clone_github_repo():
     else:
         print("Error: Cloning repository failed.")
 
-clone_github_repo()
+
 
 if __name__ == "__main__":
     install_wireguard()
