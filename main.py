@@ -51,8 +51,13 @@ def enable_ip_forwarding():
 
 def install_nvm_node():
     print("Installing NVM...")
+  
     os.system("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
-    os.system('source ~/.bashrc')
+    
+    
+    os.system("export NVM_DIR=\"$HOME/.nvm\"")
+    os.system("[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"")
+    
     os.system("nvm install v20.15.1")
     os.system("nvm use v20.15.1")
     os.system("nvm alias default v20.15.1")
