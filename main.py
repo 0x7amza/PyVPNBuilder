@@ -78,13 +78,15 @@ def install_nvm_node():
 def clone_github_repo():
     github_username = input("Enter your GitHub username: ")
     github_password = input("Enter your GitHub password: ")
-    repo_url = input("Enter the GitHub repository URL: ")
+    repo_url = "github.com/0x7amza/WireGuardManager.git"  # هنا رابط المستودع
     
     current_directory = os.getcwd()
     parent_directory = os.path.abspath(os.path.join(current_directory, os.pardir))
     
     clone_command = f"git clone https://{github_username}:{github_password}@{repo_url} {parent_directory}"
     os.system(clone_command)
+
+clone_github_repo()
 
 if __name__ == "__main__":
     install_wireguard()
