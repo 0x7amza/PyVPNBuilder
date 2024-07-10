@@ -4,9 +4,8 @@ import socket
 
 def get_local_ip():
     try:
-        # إنشاء اتصال socket إلى عنوان خارجي للحصول على عنوان IP المحلي الصحيح
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))  # الاتصال بـ Google DNS للحصول على عنوان IP المحلي
+        s.connect(("8.8.8.8", 80))  
         local_ip = s.getsockname()[0]
         s.close()
         return local_ip
@@ -92,7 +91,6 @@ def clone_github_repo():
         os.system(move_command)
     else:
         print("Error: Cloning repository failed.")
-
 
 
 if __name__ == "__main__":
