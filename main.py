@@ -2,6 +2,17 @@ import os
 import subprocess
 import socket
 
+def get_local_ip():
+    try:
+        # إنشاء اتصال socket إلى عنوان خارجي للحصول على عنوان IP المحلي الصحيح
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))  # الاتصال بـ Google DNS للحصول على عنوان IP المحلي
+        local_ip = s.getsockname()[0]
+        s.close()
+        return local_ip
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 def install_wireguard():
     print("Installing WireGuard...")
     os.system("sudo apt update")
@@ -13,16 +24,12 @@ def generate_wireguard_keys():
     public_key = subprocess.check_output(f"echo {private_key} | wg pubkey", shell=True).decode('utf-8').strip()
     return private_key, public_key
 
-def get_local_ip():
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
-    return local_ip
 
 def configure_wireguard(private_key, public_key):
     print("Configuring WireGuard...")
     ip_address = "10.0.0.1"  
     peer_port = "51820"  
-    peer_ip = get_local_ip()  
+    peer_ip = get_local_ip() 
     peer_endpoint = f"{peer_ip}:{peer_port}"
     peer_allowed_ips = "0.0.0.0/0"  
     config_content = f"""
