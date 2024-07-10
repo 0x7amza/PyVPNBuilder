@@ -68,14 +68,12 @@ def install_nvm_node():
 
     install_node = """
     nvm install v20.15.1
-    nvm use v20.15.1
-    nvm alias default v20.15.1
     """
 
     full_command = f"{source_nvm}\n{install_node}"
     subprocess.run(full_command, shell=True, executable="/bin/bash", check=True)
 
-    subprocess.run(f"source {os.environ['NVM_DIR']}/nvm.sh", shell=True, executable="/bin/bash", check=True)
+    subprocess.run(f"source {os.environ['NVM_DIR']}/nvm.sh && nvm use v20.15.1 && nvm alias default v20.15.1", shell=True, executable="/bin/bash", check=True)
 
     result = subprocess.run("node --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
     print(f"Node.js version installed: {result.stdout.decode().strip()}")
