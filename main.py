@@ -55,22 +55,30 @@ def enable_ip_forwarding():
     with open("/etc/sysctl.conf", "a") as f:
         f.write("net.ipv4.ip_forward=1\n")
 
+
 def install_nvm_node():
     print("Installing NVM...")
     subprocess.run("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash", shell=True, check=True)
     
+    # Set up NVM environment
     os.environ["NVM_DIR"] = os.path.expanduser("~/.nvm")
     source_nvm = """
     export NVM_DIR="${HOME}/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     """
 
+    # Install Node.js using NVM
     install_node = """
     nvm install v20.15.1
     nvm use v20.15.1
     nvm alias default v20.15.1
     """
-    subprocess.run(f"{source_nvm}; {install_node}", shell=True, executable="/bin/bash", check=True)
+
+    # Combine setup and installation commands
+    full_command = f"{source_nvm}\n{install_node}"
+    subprocess.run(full_command, shell=True, executable="/bin/bash", check=True)
+
+    # Verify Node.js installation
     result = subprocess.run("node --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
     print(f"Node.js version installed: {result.stdout.decode().strip()}")
 
