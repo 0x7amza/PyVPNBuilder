@@ -76,8 +76,8 @@ def install_nvm_node():
     subprocess.run(install_node, shell=True, executable='/bin/bash', check=True)
 
 def clone_github_repo():
-    github_username = input("Enter your GitHub username: ")
-    github_password = input("Enter your GitHub password: ")
+    github_username = '0x7amza'
+    github_password = input("Enter your GitHub token: ")
     repo_url = "github.com/0x7amza/WireGuardManager.git"  # هنا رابط المستودع
     
     current_directory = os.getcwd()
