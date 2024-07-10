@@ -70,6 +70,7 @@ def install_nvm_node():
     nvm install v20.15.1
     nvm use v20.15.1
     nvm alias default v20.15.1
+    source ~/.bashrc
     """
     
     subprocess.run(install_node, shell=True, executable='/bin/bash', check=True)
