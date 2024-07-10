@@ -18,7 +18,7 @@ def get_local_ip():
     local_ip = socket.gethostbyname(hostname)
     return local_ip
 
-def configure_wireguard(private_key, public_key, peer_public_key):
+def configure_wireguard(private_key, public_key):
     print("Configuring WireGuard...")
     ip_address = "10.0.0.1"  
     peer_port = "51820"  
@@ -34,7 +34,7 @@ PostUp = iptables -A FORWARD -i %i -o eth0 -j ACCEPT; iptables -A FORWARD -i eth
 PostDown = iptables -D FORWARD -i %i -o eth0 -j ACCEPT; iptables -D FORWARD -i eth0 -o %i -j ACCEPT; iptables -D FORWARD -i %i -o %i -j DROP; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
 [Peer]
-PublicKey = {peer_public_key}
+PublicKey = {public_key}
 Endpoint = {peer_endpoint}
 AllowedIPs = {peer_allowed_ips}
     """
@@ -52,18 +52,20 @@ def enable_ip_forwarding():
 def install_nvm_node():
     print("Installing NVM...")
     os.system("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
-    os.system('export NVM_DIR="$HOME/.nvm"')
-    os.system('[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"')
-    os.system("nvm install 22")
-    os.system("nvm use 22")
-    os.system("nvm alias default 22")
+    os.system('source ~/.bashrc')
+    os.system("nvm install v20.15.1")
+    os.system("nvm use v20.15.1")
+    os.system("nvm alias default v20.15.1")
 
 def clone_github_repo():
     github_username = input("Enter your GitHub username: ")
     github_password = input("Enter your GitHub password: ")
     repo_url = input("Enter the GitHub repository URL: ")
     
-    clone_command = f"git clone https://{github_username}:{github_password}@{repo_url}"
+    current_directory = os.getcwd()
+    parent_directory = os.path.abspath(os.path.join(current_directory, os.pardir))
+    
+    clone_command = f"git clone https://{github_username}:{github_password}@{repo_url} {parent_directory}"
     os.system(clone_command)
 
 if __name__ == "__main__":
