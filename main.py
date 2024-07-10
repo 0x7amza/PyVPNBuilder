@@ -57,36 +57,11 @@ def enable_ip_forwarding():
 
 def install_nvm_node():
     print("Installing NVM...")
-    subprocess.run("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash", shell=True, check=True)
-    
-    os.environ["NVM_DIR"] = os.path.expanduser("~/.nvm")
-    source_nvm = """
-    export NVM_DIR="${HOME}/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    """
-
-    install_node = """
-    nvm install v20.15.1
-    """
-
-    full_command = f"{source_nvm}\n{install_node}"
-    subprocess.run(full_command, shell=True, executable="/bin/bash", check=True)
-
-    subprocess.run(f"source {os.environ['NVM_DIR']}/nvm.sh && nvm use v20.15.1 && nvm alias default v20.15.1", shell=True, executable="/bin/bash", check=True)
-
-    try:
-        result = subprocess.run("node --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-        print(f"Node.js version installed: {result.stdout.decode().strip()}")
-    except subprocess.CalledProcessError as e:
-        print(f"Error: {e}")
-        print("Node.js is not correctly installed.")
-
-    try:
-        subprocess.run("echo 'export PATH=\"$NVM_DIR/versions/node/v20.15.1/bin:$PATH\"' >> ~/.bashrc", shell=True, check=True)
-        subprocess.run("source ~/.bashrc", shell=True, check=True)
-        print("Node.js added to PATH successfully.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error adding Node.js to PATH: {e}")
+    os.system("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash")
+    os.system("source ~/.bashrc")
+    os.system("nvm install v20.15.1")
+    os.system("nvm use v20.15.1")
+    os.system("nvm alias default v20.15.1")
 
 def clone_github_repo():
     github_username = '0x7amza'
