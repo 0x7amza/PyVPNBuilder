@@ -59,21 +59,20 @@ def install_nvm_node():
     print("Installing NVM...")
     subprocess.run("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash", shell=True, check=True)
     
-    nvm_dir = os.path.expanduser("~/.nvm")
-    source_nvm = f"""
-    export NVM_DIR="{nvm_dir}"
-    [ -s "{nvm_dir}/nvm.sh" ] && \\. "{nvm_dir}/nvm.sh"
+    os.environ["NVM_DIR"] = os.path.expanduser("~/.nvm")
+    source_nvm = """
+    export NVM_DIR="${HOME}/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     """
-    
-    install_node = f"""
-    {source_nvm}
+
+    install_node = """
     nvm install v20.15.1
     nvm use v20.15.1
     nvm alias default v20.15.1
-    source ~/.bashrc
     """
-    
-    subprocess.run(install_node, shell=True, executable='/bin/bash', check=True)
+    subprocess.run(f"{source_nvm}; {install_node}", shell=True, executable="/bin/bash", check=True)
+    result = subprocess.run("node --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+    print(f"Node.js version installed: {result.stdout.decode().strip()}")
 
 def clone_github_repo():
     github_username = '0x7amza'
