@@ -55,11 +55,9 @@ def enable_ip_forwarding():
     with open("/etc/sysctl.conf", "a") as f:
         f.write("net.ipv4.ip_forward=1\n")
 
-
 def install_nvm_node():
     print("Installing NVM...")
     subprocess.run("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash", shell=True, check=True)
-    
     os.environ["NVM_DIR"] = os.path.expanduser("~/.nvm")
     source_nvm = """
     export NVM_DIR="${HOME}/.nvm"
@@ -75,8 +73,12 @@ def install_nvm_node():
 
     subprocess.run(f"source {os.environ['NVM_DIR']}/nvm.sh && nvm use v20.15.1 && nvm alias default v20.15.1", shell=True, executable="/bin/bash", check=True)
 
-    result = subprocess.run("node --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-    print(f"Node.js version installed: {result.stdout.decode().strip()}")
+    try:
+        result = subprocess.run("$NVM_DIR/versions/node/v20.15.1/bin/node --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        print(f"Node.js version installed: {result.stdout.decode().strip()}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
+        print("Node.js is not correctly installed.")
 
 def clone_github_repo():
     github_username = '0x7amza'
